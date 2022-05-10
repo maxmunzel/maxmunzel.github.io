@@ -75,7 +75,7 @@ in the battery department that allows me to break the gun&amp;rsquo;s
 power and added a small hole for the cables:&lt;/p>
 &lt;p>&lt;img src="microcontroller.jpg" alt="The water gun with the paper contraption and the microcontroller installed">&lt;/p>
 &lt;p>The microcontroller is powered by a USB power bank which is convenient, as the microcontroller does not drain the gun&amp;rsquo;s battery (where
-rechargable batteries don&amp;rsquo;t fit (yes, really)), and the guns motor
+recheargable batteries don&amp;rsquo;t fit (yes, really)), and the guns motor
 can draw as much power as it wants without crashing the
 microcontroller. Also, it allows me to reprogram the Wemos if I
 mess up the wifi config ;)&lt;/p>
@@ -86,7 +86,7 @@ had it at hand. After finding a suitable position on my window, I
 designed a very simple holding bracket, 3D printed it and glued it
 on my balcony window using &lt;a href="https://www.amazon.de/3M-VHB-Hochleistungsklebeband-schwarz-doppelseitiges/dp/B00EDLPG7Y/ref=sr_1_6?keywords=3M+tape&amp;amp;qid=1650114049&amp;amp;sr=8-6">3M mounting tape&lt;/a> &lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>.
 I use &lt;a href="https://apps.apple.com/de/app/ipcamera-high-end-networkcam/id570912928?l=en">this app&lt;/a>
-to get a MJPEG stream of it&amp;rsquo;s camera. It works good and
+to get a MJPEG stream of its camera. It works good and
 I like that it lets you black out the display. As a final step,
 I put masking tape on the window, so that the camera does not look
 into my neighbours windows as that would be creepy.&lt;/p>
@@ -104,7 +104,7 @@ gun. We use four small tricks to make this work reliably in practice:&lt;/p>
 the wind, as well as the reflections in the window. (Otherwise
 it gets triggered whenever someone comes close to the window)&lt;/li>
 &lt;li>After a movement was detected, wait for the movement to stop
-(and the background to stabilze) again.&lt;/li>
+(and the background to stabilise) again.&lt;/li>
 &lt;/ol>
 &lt;p>This heuristic works pretty reliably.&lt;/p>
 &lt;p>The resulting code looks like this:&lt;/p>
@@ -158,14 +158,14 @@ it gets triggered whenever someone comes close to the window)&lt;/li>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> armed &lt;span style="color:#f92672">=&lt;/span> (score &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>)
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="networking">Networking&lt;/h4>
 &lt;p>The first iteration used a HTTP server on the Wemos Board that
-triggered, whenever a request was recieved. This was
+triggered, whenever a request was received. This was
 straightforward and worked well, until I found out that the wifi
 antenna on the Wemos is too weak to connect to my wifi from the
 balcony. The solution was to connect the Wemos to my phones
 hotspot. The problem is, that now the Wemos and my laptop are now
 in different networks so they cannot talk to one another directly.&lt;/p>
 &lt;p>I therefore wrote a small go program (the &lt;em>reflector&lt;/em>) that
-accepts HTTP and TCP connections: Whenever it recieves a HTTP
+accepts HTTP and TCP connections: Whenever it receives a HTTP
 request, it sends &amp;ldquo;PEW!&amp;rdquo; to one of the connected TCP clients
 (Usually there is only one). The code is pretty simple, the only
 tricky part is to ensure that reconnections are handled well.
@@ -201,7 +201,7 @@ Go makes this easy with channels and goroutines:&lt;/p>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The water gun connects via TCP and fires whenever it
-recieves &amp;ldquo;PEW!&amp;rdquo;. The python script on my laptop stays as it is and
+receives &amp;ldquo;PEW!&amp;rdquo;. The python script on my laptop stays as it is and
 simply sends its HTTP requests to the go program on my server
 instead of directly to the Wemos. I chose to use micropython to
 program the Wemos:&lt;/p>
@@ -221,14 +221,14 @@ program the Wemos:&lt;/p>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">finally&lt;/span>:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> s&lt;span style="color:#f92672">.&lt;/span>close()
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The smart ones among you may have noticed some bugs in the snippets
-above: TCP does not garantee that our &amp;ldquo;PEW!&amp;rdquo; message is sent
-recieved in a single package; if multiple clients are connected,
-only one recieves the message (which may be disconnected);
-and the whole operation is entriely unencrypted and
+above: TCP does not guarantee that our &amp;ldquo;PEW!&amp;rdquo; message is sent
+received in a single package; if multiple clients are connected,
+only one receives the message (which may be disconnected);
+and the whole operation is entirely unencrypted and
 unauthenticated. And you&amp;rsquo;d be absolutely right. A nice thing about
 writing software just for oneself is that its completely sufficent
-if it works for me (tm). Of cause I made sure that the setup cannot
-be used go gain access to my network / remote code execution /
+if it works for me (tm). Of course I made sure that the setup cannot
+be used to gain access to my network / remote code execution /
 host child porn / be used for DDOS or all of the other stuff that
 may happen when you deploy software on the internet. If this post
 motivates someone to find my server and empty the whole whopping
@@ -240,7 +240,7 @@ text you wouldn&amp;rsquo;t do that, right? &amp;lt;3&lt;/p>
 &lt;p>&lt;img src="1.jpg" alt="">&lt;/p>
 &lt;p>Look at him sitting there, just behind the railings. This is
 precisely where the water gun &lt;em>would&lt;/em> be pointing at. This picture
-was taken, in the brief period between realizing that the wifi on
+was taken, in the brief period between realising that the wifi on
 the balcony is too weak and coming up with the reflector solution.
 Luckily he was not in the mood for release.&lt;/p>
 &lt;p>After I installed the updated version including a working water
@@ -255,25 +255,25 @@ it to the third dimension:&lt;/p>
 &lt;p>&lt;img src="5.jpg" alt="">&lt;/p>
 &lt;p>I guess, I&amp;rsquo;ll just keep the table inside for now.&lt;/p>
 &lt;p>To be continued&amp;hellip;&lt;/p>
-&lt;section class="footnotes" role="doc-endnotes">
+&lt;div class="footnotes" role="doc-endnotes">
 &lt;hr>
 &lt;ol>
-&lt;li id="fn:1" role="doc-endnote">
+&lt;li id="fn:1">
 &lt;p>I &lt;strong>love&lt;/strong> this stuff! I mounted various tablets for my
 &lt;a href="https://github.com/maxmunzel/strichliste2.0/blob/master/README.md">tally list project&lt;/a>,
 half of the things on my racing drone, the side panels of my
 kitchen(!), all the cables smart home hubs and switches under my desk,
 power strips in every imaginable place, and so many other things with it.&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
 &lt;/li>
-&lt;li id="fn:2" role="doc-endnote">
+&lt;li id="fn:2">
 &lt;p>The background is computed as the moving average of all images the software gets.
 For each new image the software gets from the camera the background is calculated
 as &lt;code>background[x,y] &amp;lt;- background[x,y] * 0.95 + new_image[x,y] * 0.05&lt;/code> for each pixel.
 (the software works in black and white) If we just took one picture in the beginning,
-we would detect a lot of differences as clouds change the lighting throuout the day.&amp;#160;&lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+we would detect a lot of differences as clouds change the lighting throughout the day.&amp;#160;&lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
 &lt;/li>
 &lt;/ol>
-&lt;/section></content></item><item><title/><link>https://maxnagy.com/about/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://maxnagy.com/about/</guid><description>Hi, I&amp;rsquo;m Max and this is my website!
+&lt;/div></content></item><item><title/><link>https://maxnagy.com/about/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://maxnagy.com/about/</guid><description>Hi, I&amp;rsquo;m Max and this is my website!
 I currently study computer science in the master&amp;rsquo;s program at KIT.
 This website is currently pretty boring and I&amp;rsquo;ll try my best to make it more w̴͉̤͖̰̺͇͌͆͐̑̎͋̆̌͘ē̴̪̬̟͓̯̫̖̎̾̓̏̚͝i̷͍̳̱̲̳̥͒̒͐̌̒̋͂̈͑͘͠r̵̛̪͎͒̑̅͐͗́͒̒͌̕͠͝d̴̡͈̻̯͕̤͚͕̝̣̈́̓͝ in the future. Doodles as a comment system, anyone?</description><content>&lt;p>Hi, I&amp;rsquo;m Max and this is my website!&lt;/p>
 &lt;p>I currently study computer science in the master&amp;rsquo;s program at KIT.&lt;/p>

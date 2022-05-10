@@ -11,7 +11,7 @@ switches).
 To control the water gun, I inserted a small paper contraption
 in the battery department that allows me to break the gun&rsquo;s
 power and added a small hole for the cables:</p><p><img src=microcontroller.jpg alt="The water gun with the paper contraption and the microcontroller installed"></p><p>The microcontroller is powered by a USB power bank which is convenient, as the microcontroller does not drain the gun&rsquo;s battery (where
-rechargable batteries don&rsquo;t fit (yes, really)), and the guns motor
+recheargable batteries don&rsquo;t fit (yes, really)), and the guns motor
 can draw as much power as it wants without crashing the
 microcontroller. Also, it allows me to reprogram the Wemos if I
 mess up the wifi config ;)</p><h1 id=the-camera>The Camera<a href=#the-camera class=hanchor arialabel=Anchor>&#8983;</a></h1><p>I decided to use my old iPhone 6S as a camera: Its small, has a
@@ -20,7 +20,7 @@ had it at hand. After finding a suitable position on my window, I
 designed a very simple holding bracket, 3D printed it and glued it
 on my balcony window using <a href="https://www.amazon.de/3M-VHB-Hochleistungsklebeband-schwarz-doppelseitiges/dp/B00EDLPG7Y/ref=sr_1_6?keywords=3M+tape&qid=1650114049&sr=8-6">3M mounting tape</a> <sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>.
 I use <a href="https://apps.apple.com/de/app/ipcamera-high-end-networkcam/id570912928?l=en">this app</a>
-to get a MJPEG stream of it&rsquo;s camera. It works good and
+to get a MJPEG stream of its camera. It works good and
 I like that it lets you black out the display. As a final step,
 I put masking tape on the window, so that the camera does not look
 into my neighbours windows as that would be creepy.</p><h1 id=the-software>The Software<a href=#the-software class=hanchor arialabel=Anchor>&#8983;</a></h1><h4 id=image-analysis>Image Analysis<a href=#image-analysis class=hanchor arialabel=Anchor>&#8983;</a></h4><p>The brains of the operation is a python script using openCV. It
@@ -30,7 +30,7 @@ gun. We use four small tricks to make this work reliably in practice:</p><ol><li
 (in this case someone touched the camera)</li><li>We add a mask over the image to exclude some flowers that move in
 the wind, as well as the reflections in the window. (Otherwise
 it gets triggered whenever someone comes close to the window)</li><li>After a movement was detected, wait for the movement to stop
-(and the background to stabilze) again.</li></ol><p>This heuristic works pretty reliably.</p><p>The resulting code looks like this:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>    stream <span style=color:#f92672>=</span> CamGear(source<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;http://IP_OF_IPHONE/live&#34;</span>)<span style=color:#f92672>.</span>start()
+(and the background to stabilise) again.</li></ol><p>This heuristic works pretty reliably.</p><p>The resulting code looks like this:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>    stream <span style=color:#f92672>=</span> CamGear(source<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;http://IP_OF_IPHONE/live&#34;</span>)<span style=color:#f92672>.</span>start()
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>    background <span style=color:#f92672>=</span> <span style=color:#66d9ef>None</span>
 </span></span><span style=display:flex><span>    <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
@@ -79,13 +79,13 @@ it gets triggered whenever someone comes close to the window)</li><li>After a mo
 </span></span><span style=display:flex><span>            <span style=color:#75715e># rearm if the image is stable again</span>
 </span></span><span style=display:flex><span>            armed <span style=color:#f92672>=</span> (score <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
 </span></span></code></pre></div><h4 id=networking>Networking<a href=#networking class=hanchor arialabel=Anchor>&#8983;</a></h4><p>The first iteration used a HTTP server on the Wemos Board that
-triggered, whenever a request was recieved. This was
+triggered, whenever a request was received. This was
 straightforward and worked well, until I found out that the wifi
 antenna on the Wemos is too weak to connect to my wifi from the
 balcony. The solution was to connect the Wemos to my phones
 hotspot. The problem is, that now the Wemos and my laptop are now
 in different networks so they cannot talk to one another directly.</p><p>I therefore wrote a small go program (the <em>reflector</em>) that
-accepts HTTP and TCP connections: Whenever it recieves a HTTP
+accepts HTTP and TCP connections: Whenever it receives a HTTP
 request, it sends &ldquo;PEW!&rdquo; to one of the connected TCP clients
 (Usually there is only one). The code is pretty simple, the only
 tricky part is to ensure that reconnections are handled well.
@@ -120,7 +120,7 @@ Go makes this easy with channels and goroutines:</p><div class=highlight><pre ta
 </span></span><span style=display:flex><span>	}
 </span></span><span style=display:flex><span>}
 </span></span></code></pre></div><p>The water gun connects via TCP and fires whenever it
-recieves &ldquo;PEW!&rdquo;. The python script on my laptop stays as it is and
+receives &ldquo;PEW!&rdquo;. The python script on my laptop stays as it is and
 simply sends its HTTP requests to the go program on my server
 instead of directly to the Wemos. I chose to use micropython to
 program the Wemos:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>main</span>():
@@ -139,14 +139,14 @@ program the Wemos:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;b
 </span></span><span style=display:flex><span>        <span style=color:#66d9ef>finally</span>:
 </span></span><span style=display:flex><span>            s<span style=color:#f92672>.</span>close()
 </span></span></code></pre></div><p>The smart ones among you may have noticed some bugs in the snippets
-above: TCP does not garantee that our &ldquo;PEW!&rdquo; message is sent
-recieved in a single package; if multiple clients are connected,
-only one recieves the message (which may be disconnected);
-and the whole operation is entriely unencrypted and
+above: TCP does not guarantee that our &ldquo;PEW!&rdquo; message is sent
+received in a single package; if multiple clients are connected,
+only one receives the message (which may be disconnected);
+and the whole operation is entirely unencrypted and
 unauthenticated. And you&rsquo;d be absolutely right. A nice thing about
 writing software just for oneself is that its completely sufficent
-if it works for me (tm). Of cause I made sure that the setup cannot
-be used go gain access to my network / remote code execution /
+if it works for me (tm). Of course I made sure that the setup cannot
+be used to gain access to my network / remote code execution /
 host child porn / be used for DDOS or all of the other stuff that
 may happen when you deploy software on the internet. If this post
 motivates someone to find my server and empty the whole whopping
@@ -154,21 +154,21 @@ motivates someone to find my server and empty the whole whopping
 reflector bind only my VPN. But if you made it this far through the
 text you wouldn&rsquo;t do that, right? &lt;3</p><h1 id=results>Results<a href=#results class=hanchor arialabel=Anchor>&#8983;</a></h1><p>Let&rsquo;s have a look at our first customer:</p><p><img src=1.jpg alt></p><p>Look at him sitting there, just behind the railings. This is
 precisely where the water gun <em>would</em> be pointing at. This picture
-was taken, in the brief period between realizing that the wifi on
+was taken, in the brief period between realising that the wifi on
 the balcony is too weak and coming up with the reflector solution.
 Luckily he was not in the mood for release.</p><p>After I installed the updated version including a working water
 gun, not a single pigeon was seen again. <em>For six days</em>. Maybe
 shouting at pigeons is not that bad of a solution after all?
 Luckily I had an exam phase to distract me from this
 disappointment.</p><p>I was quite relieved-ish to find another customer on day seven:</p><p><img src=4.jpg alt></p><p>Spot on! This success lasted for a few days until the pigeons took
-it to the third dimension:</p><p><img src=5.jpg alt></p><p>I guess, I&rsquo;ll just keep the table inside for now.</p><p>To be continued&mldr;</p><section class=footnotes role=doc-endnotes><hr><ol><li id=fn:1 role=doc-endnote><p>I <strong>love</strong> this stuff! I mounted various tablets for my
+it to the third dimension:</p><p><img src=5.jpg alt></p><p>I guess, I&rsquo;ll just keep the table inside for now.</p><p>To be continued&mldr;</p><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p>I <strong>love</strong> this stuff! I mounted various tablets for my
 <a href=https://github.com/maxmunzel/strichliste2.0/blob/master/README.md>tally list project</a>,
 half of the things on my racing drone, the side panels of my
 kitchen(!), all the cables smart home hubs and switches under my desk,
-power strips in every imaginable place, and so many other things with it.&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li><li id=fn:2 role=doc-endnote><p>The background is computed as the moving average of all images the software gets.
+power strips in every imaginable place, and so many other things with it.&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li><li id=fn:2><p>The background is computed as the moving average of all images the software gets.
 For each new image the software gets from the camera the background is calculated
 as <code>background[x,y] &lt;- background[x,y] * 0.95 + new_image[x,y] * 0.05</code> for each pixel.
 (the software works in black and white) If we just took one picture in the beginning,
-we would detect a lot of differences as clouds change the lighting throuout the day.&#160;<a href=#fnref:2 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></section></div></div></div></div><footer class=footer><div class=footer__inner><div class="copyright copyright--user"><span>© 2021 Max Nagy</span>
+we would detect a lot of differences as clouds change the lighting throughout the day.&#160;<a href=#fnref:2 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></div></div></div></div></div><footer class=footer><div class=footer__inner><div class="copyright copyright--user"><span>© 2021 Max Nagy</span>
 <span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://maxnagy.com/assets/main.js></script>
 <script src=https://maxnagy.com/assets/prism.js></script></div></body></html>
