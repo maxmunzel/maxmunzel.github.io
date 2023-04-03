@@ -73,7 +73,7 @@ old iPhone.&lt;/p>
 &lt;p>I bought a cheap electric water gun &lt;a href="https://www.amazon.de/Wasserpistole-Elektrische-Wasserblaster-Wasserdicht-Wasserspielzeug/dp/B09578C69R/ref=sr_1_6?keywords=wasserpistole+elektrisch&amp;amp;qid=1650101643&amp;amp;sprefix=wasserpistole+ele%2Caps%2C147&amp;amp;sr=8-6">from Amazon&lt;/a> and tested it out: The range of around 3-4 meters is pathetic, but plenty for my balcony.&lt;/p>
 &lt;p>Next, I opened it up to figure out how to control it over the internet:&lt;/p>
 &lt;p>&lt;img src="water_gun.jpg" alt="The water gun opened">&lt;/p>
-&lt;p>I chose one of my trusty Wemos D1 Mini boards as the brain if the
+&lt;p>I chose one of my trusty Wemos D1 Mini boards as the brain of the
 water gun. They are small, cheap, offer Wifi and have some shields
 available for them that ease cabling. In particular I&amp;rsquo;m using the
 relay shield. (Relays are basically electrically operated
