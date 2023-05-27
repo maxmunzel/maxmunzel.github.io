@@ -1,4 +1,94 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Max Nagy</title><link>https://maxnagy.com/posts/</link><description>Recent content in Posts on Max Nagy</description><generator>Hugo -- gohugo.io</generator><language>en</language><copyright>© 2023 Max Nagy</copyright><lastBuildDate>Fri, 13 Jan 2023 10:31:00 +0200</lastBuildDate><atom:link href="https://maxnagy.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>How to debug NaN Values in PyTorch Models during Training</title><link>https://maxnagy.com/posts/torch_nans/</link><pubDate>Fri, 13 Jan 2023 10:31:00 +0200</pubDate><guid>https://maxnagy.com/posts/torch_nans/</guid><description>It&amp;rsquo;s really slow.</description><content>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># FROM THE DEPTH OF THE POND SHINES THE TORCH OF LIGHT WHERE THERE&lt;/span>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Max Nagy</title><link>https://maxnagy.com/posts/</link><description>Recent content in Posts on Max Nagy</description><generator>Hugo -- gohugo.io</generator><language>en</language><copyright>© 2023 Max Nagy</copyright><lastBuildDate>Sat, 27 May 2023 11:43:00 +0200</lastBuildDate><atom:link href="https://maxnagy.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Speeding up Python with Java</title><link>https://maxnagy.com/posts/jpype/</link><pubDate>Sat, 27 May 2023 11:43:00 +0200</pubDate><guid>https://maxnagy.com/posts/jpype/</guid><description>Remember kids, 8 billion devices run Java.</description><content>&lt;p>Speeding up Python with C, C++, Rust or Fortran is pretty common.
+Today we&amp;rsquo;ll do something different and use Java instead. While definitely uncool, its memory safe,
+garbage collected and pretty quick due to JVM magic.&lt;/p>
+&lt;p>As an example, we&amp;rsquo;ll be implementing a very simple state machine that counts the number of times
+a value passes a certain limit in a sequence of data. That&amp;rsquo;s not a very useful thing per se, but
+the pattern of a state machine iterating over an array is pretty versatile and something Python is
+really bad at due to its slow loops.&lt;/p>
+&lt;p>Let&amp;rsquo;s start with the Python implementation:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> numpy &lt;span style="color:#66d9ef">as&lt;/span> np
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">steps&lt;/span>(arr: np&lt;span style="color:#f92672">.&lt;/span>ndarray, limit) &lt;span style="color:#f92672">-&amp;gt;&lt;/span> tuple[int, int]:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> up &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> down &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> state &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> a &lt;span style="color:#f92672">in&lt;/span> arr:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> state &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#f92672">and&lt;/span> a &lt;span style="color:#f92672">&amp;gt;&lt;/span> limit:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> up &lt;span style="color:#f92672">+=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> state &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">elif&lt;/span> state &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">and&lt;/span> a &lt;span style="color:#f92672">&amp;lt;=&lt;/span> limit:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> down &lt;span style="color:#f92672">+=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> state &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> up, down
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">assert&lt;/span> steps(np&lt;span style="color:#f92672">.&lt;/span>array([&lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>]), &lt;span style="color:#ae81ff">0.5&lt;/span>) &lt;span style="color:#f92672">==&lt;/span> (&lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The Java version is also pretty straight forward:&lt;/p>
+&lt;pre tabindex="0">&lt;code>public class Step {
+public int up;
+public int down;
+public Step(float[] arr, float limit) {
+int up = 0;
+int down = 0;
+int state = 0;
+for (int i = 0; i &amp;lt; arr.length; i++) {
+float a = arr[i];
+if (state == 0 &amp;amp;&amp;amp; a &amp;gt; limit) {
+up += 1;
+state = 1;
+} else if (state == 1 &amp;amp;&amp;amp; a &amp;lt;= limit) {
+down += 1;
+state = 0;
+}
+}
+this.up = up;
+this.down = down;
+}
+}
+&lt;/code>&lt;/pre>&lt;p>To call it, we add a small wrapper using &lt;a href="https://github.com/jpype-project/jpype">jpype&lt;/a>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> jpype
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">try&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> jpype&lt;span style="color:#f92672">.&lt;/span>shutdownJVM()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">except&lt;/span> &lt;span style="color:#a6e22e">RuntimeError&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">pass&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>jpype&lt;span style="color:#f92672">.&lt;/span>startJVM()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Step &lt;span style="color:#f92672">=&lt;/span> jpype&lt;span style="color:#f92672">.&lt;/span>JClass(&lt;span style="color:#e6db74">&amp;#34;Step&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">steps_java&lt;/span>(arr: np&lt;span style="color:#f92672">.&lt;/span>ndarray, limit: float):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> res &lt;span style="color:#f92672">=&lt;/span> Step(jpype&lt;span style="color:#f92672">.&lt;/span>JArray&lt;span style="color:#f92672">.&lt;/span>of(arr), limit)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> res&lt;span style="color:#f92672">.&lt;/span>up, res&lt;span style="color:#f92672">.&lt;/span>down
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Jpype really nailed the ergonomics of using Java objects in python. Only the JVM handling feels a little clunky and
+is pretty slow on my machine. Lets compare the two versions:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>❯ javac Step.java
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>❯ ipython3
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Python 3.11.3 &lt;span style="color:#f92672">(&lt;/span>main, Apr &lt;span style="color:#ae81ff">7&lt;/span> 2023, 19:25:52&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Clang 14.0.0 &lt;span style="color:#f92672">(&lt;/span>clang-1400.0.29.202&lt;span style="color:#f92672">)]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Type &lt;span style="color:#e6db74">&amp;#39;copyright&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;credits&amp;#39;&lt;/span> or &lt;span style="color:#e6db74">&amp;#39;license&amp;#39;&lt;/span> &lt;span style="color:#66d9ef">for&lt;/span> more information
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>IPython 8.13.2 -- An enhanced Interactive Python. Type &lt;span style="color:#e6db74">&amp;#39;?&amp;#39;&lt;/span> &lt;span style="color:#66d9ef">for&lt;/span> help.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>In &lt;span style="color:#f92672">[&lt;/span>1&lt;span style="color:#f92672">]&lt;/span>: from step import *
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>In &lt;span style="color:#f92672">[&lt;/span>2&lt;span style="color:#f92672">]&lt;/span>: arr &lt;span style="color:#f92672">=&lt;/span> np.array&lt;span style="color:#f92672">(&lt;/span>np.random.random&lt;span style="color:#f92672">(&lt;/span>size&lt;span style="color:#f92672">=&lt;/span>1000000&lt;span style="color:#f92672">)&lt;/span>, dtype&lt;span style="color:#f92672">=&lt;/span>np.float32&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>In &lt;span style="color:#f92672">[&lt;/span>3&lt;span style="color:#f92672">]&lt;/span>: %timeit steps_java&lt;span style="color:#f92672">(&lt;/span>arr, .9&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>5.31 ms ± 70.7 µs per loop &lt;span style="color:#f92672">(&lt;/span>mean ± std. dev. of &lt;span style="color:#ae81ff">7&lt;/span> runs, &lt;span style="color:#ae81ff">100&lt;/span> loops each&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>In &lt;span style="color:#f92672">[&lt;/span>4&lt;span style="color:#f92672">]&lt;/span>: %timeit steps_java&lt;span style="color:#f92672">(&lt;/span>arr, .9&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#75715e"># after warmup&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>5.11 ms ± &lt;span style="color:#ae81ff">111&lt;/span> µs per loop &lt;span style="color:#f92672">(&lt;/span>mean ± std. dev. of &lt;span style="color:#ae81ff">7&lt;/span> runs, &lt;span style="color:#ae81ff">100&lt;/span> loops each&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>In &lt;span style="color:#f92672">[&lt;/span>5&lt;span style="color:#f92672">]&lt;/span>: %timeit steps&lt;span style="color:#f92672">(&lt;/span>arr, .9&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>1.33 s ± 34.6 ms per loop &lt;span style="color:#f92672">(&lt;/span>mean ± std. dev. of &lt;span style="color:#ae81ff">7&lt;/span> runs, &lt;span style="color:#ae81ff">1&lt;/span> loop each&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>In &lt;span style="color:#f92672">[&lt;/span>6&lt;span style="color:#f92672">]&lt;/span>: %timeit steps&lt;span style="color:#f92672">(&lt;/span>arr, .9&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#75715e"># after warmup&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>1.23 s ± 67.2 ms per loop &lt;span style="color:#f92672">(&lt;/span>mean ± std. dev. of &lt;span style="color:#ae81ff">7&lt;/span> runs, &lt;span style="color:#ae81ff">1&lt;/span> loop each&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>In &lt;span style="color:#f92672">[&lt;/span>7&lt;span style="color:#f92672">]&lt;/span>: assert steps&lt;span style="color:#f92672">(&lt;/span>arr, .9&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">==&lt;/span> steps_java&lt;span style="color:#f92672">(&lt;/span>arr, .9&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#75715e"># both produce the same result&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>As you can see, the java version is around 200 times faster, even with the data conversion.
+I also like the ergonomics and that the JVM saves me from cross compiling.&lt;/p>
+&lt;p>Remember kids, 8 billion devices run Java.&lt;/p></content></item><item><title>How to debug NaN Values in PyTorch Models during Training</title><link>https://maxnagy.com/posts/torch_nans/</link><pubDate>Fri, 13 Jan 2023 10:31:00 +0200</pubDate><guid>https://maxnagy.com/posts/torch_nans/</guid><description>It&amp;rsquo;s really slow.</description><content>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># FROM THE DEPTH OF THE POND SHINES THE TORCH OF LIGHT WHERE THERE&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># IS GREED IN MEN AND LIGHT IN THE STONE WHERE THE ANCIENT SPIRIT&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># LIVES THAT CONSUMES TIME TO SHED TRUTH UPON NUMBERS THAT EXCEED THE&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># REACH OF GOD IT REQUIRES THE ULTIMATE SACRIFICE OF TIME OH HOW SLOW&lt;/span>
