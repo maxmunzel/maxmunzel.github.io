@@ -21,30 +21,30 @@ really bad at due to its slow loops.</p><p>Let&rsquo;s start with the Python imp
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#66d9ef>assert</span> steps(np<span style=color:#f92672>.</span>array([<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>1</span>]), <span style=color:#ae81ff>0.5</span>) <span style=color:#f92672>==</span> (<span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>1</span>)
-</span></span></code></pre></div><p>The Java version is also pretty straight forward:</p><pre tabindex=0><code>public class Step {
-    public int up;
-    public int down;
-
-    public Step(float[] arr, float limit) {
-        int up = 0;
-        int down = 0;
-        int state = 0;
-        for (int i = 0; i &lt; arr.length; i++) {
-            float a = arr[i];
-            if (state == 0 &amp;&amp; a &gt; limit) {
-                up += 1;
-                state = 1;
-            } else if (state == 1 &amp;&amp; a &lt;= limit) {
-                down += 1;
-                state = 0;
-            }
-        }
-
-        this.up = up;
-        this.down = down;
-    }
-}
-</code></pre><p>To call it, we add a small wrapper using <a href=https://github.com/jpype-project/jpype>jpype</a>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> jpype
+</span></span></code></pre></div><p>The Java version is also pretty straight forward:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=display:flex><span><span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Step</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>int</span> up<span style=color:#f92672>;</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>int</span> down<span style=color:#f92672>;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>Step</span><span style=color:#f92672>(</span><span style=color:#66d9ef>float</span><span style=color:#f92672>[]</span> arr<span style=color:#f92672>,</span> <span style=color:#66d9ef>float</span> limit<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>int</span> up <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span><span style=color:#f92672>;</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>int</span> down <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span><span style=color:#f92672>;</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>int</span> state <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span><span style=color:#f92672>;</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> <span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span><span style=color:#f92672>;</span> i <span style=color:#f92672>&lt;</span> arr<span style=color:#f92672>.</span><span style=color:#a6e22e>length</span><span style=color:#f92672>;</span> i<span style=color:#f92672>++)</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>float</span> a <span style=color:#f92672>=</span> arr<span style=color:#f92672>[</span>i<span style=color:#f92672>];</span>
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>state <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span> <span style=color:#f92672>&amp;&amp;</span> a <span style=color:#f92672>&gt;</span> limit<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>                up <span style=color:#f92672>+=</span> <span style=color:#ae81ff>1</span><span style=color:#f92672>;</span>
+</span></span><span style=display:flex><span>                state <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span><span style=color:#f92672>;</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>}</span> <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>state <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>&amp;&amp;</span> a <span style=color:#f92672>&lt;=</span> limit<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>                down <span style=color:#f92672>+=</span> <span style=color:#ae81ff>1</span><span style=color:#f92672>;</span>
+</span></span><span style=display:flex><span>                state <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span><span style=color:#f92672>;</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>up</span> <span style=color:#f92672>=</span> up<span style=color:#f92672>;</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>down</span> <span style=color:#f92672>=</span> down<span style=color:#f92672>;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span></code></pre></div><p>To call it, we add a small wrapper using <a href=https://github.com/jpype-project/jpype>jpype</a>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> jpype
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#66d9ef>try</span>:
 </span></span><span style=display:flex><span>    jpype<span style=color:#f92672>.</span>shutdownJVM()
