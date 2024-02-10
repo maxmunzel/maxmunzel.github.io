@@ -300,29 +300,29 @@ really bad at due to its slow loops.&lt;/p>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">assert&lt;/span> steps(np&lt;span style="color:#f92672">.&lt;/span>array([&lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>]), &lt;span style="color:#ae81ff">0.5&lt;/span>) &lt;span style="color:#f92672">==&lt;/span> (&lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>)
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The Java version is also pretty straight forward:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">Step&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> up&lt;span style="color:#f92672">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> down&lt;span style="color:#f92672">;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">Step&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> up;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> down;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#a6e22e">Step&lt;/span>&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#66d9ef">float&lt;/span>&lt;span style="color:#f92672">[]&lt;/span> arr&lt;span style="color:#f92672">,&lt;/span> &lt;span style="color:#66d9ef">float&lt;/span> limit&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> up &lt;span style="color:#f92672">=&lt;/span> 0&lt;span style="color:#f92672">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> down &lt;span style="color:#f92672">=&lt;/span> 0&lt;span style="color:#f92672">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> state &lt;span style="color:#f92672">=&lt;/span> 0&lt;span style="color:#f92672">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#66d9ef">int&lt;/span> i &lt;span style="color:#f92672">=&lt;/span> 0&lt;span style="color:#f92672">;&lt;/span> i &lt;span style="color:#f92672">&amp;lt;&lt;/span> arr&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">length&lt;/span>&lt;span style="color:#f92672">;&lt;/span> i&lt;span style="color:#f92672">++)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">float&lt;/span> a &lt;span style="color:#f92672">=&lt;/span> arr&lt;span style="color:#f92672">[&lt;/span>i&lt;span style="color:#f92672">];&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">(&lt;/span>state &lt;span style="color:#f92672">==&lt;/span> 0 &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> a &lt;span style="color:#f92672">&amp;gt;&lt;/span> limit&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> up &lt;span style="color:#f92672">+=&lt;/span> 1&lt;span style="color:#f92672">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> state &lt;span style="color:#f92672">=&lt;/span> 1&lt;span style="color:#f92672">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">}&lt;/span> &lt;span style="color:#66d9ef">else&lt;/span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">(&lt;/span>state &lt;span style="color:#f92672">==&lt;/span> 1 &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> a &lt;span style="color:#f92672">&amp;lt;=&lt;/span> limit&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> down &lt;span style="color:#f92672">+=&lt;/span> 1&lt;span style="color:#f92672">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> state &lt;span style="color:#f92672">=&lt;/span> 0&lt;span style="color:#f92672">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#a6e22e">Step&lt;/span>(&lt;span style="color:#66d9ef">float&lt;/span>&lt;span style="color:#f92672">[]&lt;/span> arr, &lt;span style="color:#66d9ef">float&lt;/span> limit) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> up &lt;span style="color:#f92672">=&lt;/span> 0;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> down &lt;span style="color:#f92672">=&lt;/span> 0;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> state &lt;span style="color:#f92672">=&lt;/span> 0;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">int&lt;/span> i &lt;span style="color:#f92672">=&lt;/span> 0; i &lt;span style="color:#f92672">&amp;lt;&lt;/span> arr.&lt;span style="color:#a6e22e">length&lt;/span>; i&lt;span style="color:#f92672">++&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">float&lt;/span> a &lt;span style="color:#f92672">=&lt;/span> arr&lt;span style="color:#f92672">[&lt;/span>i&lt;span style="color:#f92672">]&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (state &lt;span style="color:#f92672">==&lt;/span> 0 &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> a &lt;span style="color:#f92672">&amp;gt;&lt;/span> limit) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> up &lt;span style="color:#f92672">+=&lt;/span> 1;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> state &lt;span style="color:#f92672">=&lt;/span> 1;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">else&lt;/span> &lt;span style="color:#66d9ef">if&lt;/span> (state &lt;span style="color:#f92672">==&lt;/span> 1 &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> a &lt;span style="color:#f92672">&amp;lt;=&lt;/span> limit) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> down &lt;span style="color:#f92672">+=&lt;/span> 1;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> state &lt;span style="color:#f92672">=&lt;/span> 0;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">up&lt;/span> &lt;span style="color:#f92672">=&lt;/span> up&lt;span style="color:#f92672">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">down&lt;/span> &lt;span style="color:#f92672">=&lt;/span> down&lt;span style="color:#f92672">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">up&lt;/span> &lt;span style="color:#f92672">=&lt;/span> up;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">down&lt;/span> &lt;span style="color:#f92672">=&lt;/span> down;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To call it, we add a small wrapper using &lt;a href="https://github.com/jpype-project/jpype">jpype&lt;/a>:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> jpype
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
@@ -654,4 +654,72 @@ This website is currently pretty boring and I&amp;rsquo;ll try my best to make i
 &lt;p>I currently study computer science in the master&amp;rsquo;s program at KIT.&lt;/p>
 &lt;p>This website is currently pretty boring and I&amp;rsquo;ll try my best to
 make it more w̴͉̤͖̰̺͇͌͆͐̑̎͋̆̌͘ē̴̪̬̟͓̯̫̖̎̾̓̏̚͝i̷͍̳̱̲̳̥͒̒͐̌̒̋͂̈͑͘͠r̵̛̪͎͒̑̅͐͗́͒̒͌̕͠͝d̴̡͈̻̯͕̤͚͕̝̣̈́̓͝ in the future. Doodles as a comment system,
-anyone?&lt;/p></content></item></channel></rss>
+anyone?&lt;/p></content></item><item><title>doodle</title><link>https://maxnagy.com/doodle/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://maxnagy.com/doodle/</guid><description>Reset Send</description><content>&lt;style>
+canvas {
+border: 2px solid #FEAA70;
+}
+&lt;/style>
+&lt;/head>
+&lt;p>&lt;canvas id="drawingCanvas" width="400" height="400">&lt;/canvas>&lt;br>
+&lt;button onclick="resetCanvas()">Reset&lt;/button>
+&lt;button onclick="sendData()">Send&lt;/button>&lt;/p>
+&lt;script>
+function postToURL(url, imageData) {
+// Convert image data to Blob
+let blob = new Blob([imageData], { type: 'image/jpeg' });
+// Create a FormData object
+let formData = new FormData();
+// Append the Blob to the FormData object
+formData.append('image', blob, 'image.jpg');
+// Send a POST request with the FormData
+fetch(url, {
+method: 'POST',
+body: formData
+})
+.then(response => {
+if (!response.ok) {
+throw new Error('Network response was not ok');
+}
+return response.json();
+})
+.then(data => {
+console.log('Data sent successfully:', data);
+})
+.catch(error => {
+console.error('Error sending data:', error);
+});
+}
+let canvas = document.getElementById("drawingCanvas");
+let ctx = canvas.getContext("2d");
+let bgColor= "#222129"; // default draw color
+let drawColor = "#FEAA70"; // default background color
+let drawing = false;
+function draw(e) {
+if (!drawing) return;
+ctx.fillStyle = drawColor;
+ctx.fillRect(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop, 4, 4);
+}
+canvas.addEventListener("mousedown", () => {
+drawing = true;
+});
+canvas.addEventListener("mousemove", draw);
+window.addEventListener("mouseup", () => {
+drawing = false;
+});
+function resetCanvas() {
+ctx.fillStyle = bgColor;
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+function sendData() {
+// Post data to a specified URL
+let imageData = canvas.toDataURL(); // Convert canvas to image data
+let currentURL = window.location.href; // Get current URL
+let postData = {
+image: imageData,
+url: currentURL
+};
+// Assuming you have a function to post data to a URL
+// Replace 'postToURL' with your actual function to post data
+postToURL('http://demo.maxnagy.com/doodle', postData);
+}
+&lt;/script></content></item></channel></rss>
